@@ -21,7 +21,7 @@
 
 
 %Author: Lenore Tahara-Eckl
-%Email: Ltah262@aucklanduni.ac.nz
+%Email: Ltah262@aucklanduni.ac.nz or Ltahara2@gmail.com
 %Date: 30/06/20
 
 
@@ -30,12 +30,10 @@ clear all;
 close all;
 
 %define/add pathways
-%startdir = input('Please enter data directory:', 's');
-startdir = '/data/USERS/LENORE';
+startdir = input('Please enter data directory:', 's');
 
 %Script directory is defined, so that it can be added to path below:
-%ScriptDirectory = input('Please enter script directory:', 's');
-ScriptDirectory = '/data/USERS/LENORE/scripts/dprc/diffusion';
+ScriptDirectory = input('Please enter script directory:', 's');
 
 %go to the directory where your scripts are.
 cd(ScriptDirectory);
