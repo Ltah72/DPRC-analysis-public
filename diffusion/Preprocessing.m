@@ -16,6 +16,7 @@
 %0. 'Pre-steps'                                 (organise files/directories, define variaiables, etc.)
 %1. Noise correction                            (denoising -- MP-PCA, Veraart et al., 2016)
 %2. Gibbs ringing correction                    (local sub-voxel shift, Kellner et al., 2016)
+% OPTIONAL - edit/reorganising files            (DPRC specific dwi volumes edit for UKB protocol)
 %3. Field distortion                            (TOPUP -- FSL, Andersson et al., 2003; Smith, 2004)
 %  a)Best B0 pair selection                     (BestB0 – in-house function, Alfaro-Almagro, et al., 2018)
 %4  Estimate a brain mask                       (BET -- FSL, Smith, 2002)
@@ -35,13 +36,10 @@ close all;
 
 %Choose directory where the diffusion data is (same level as sourcedata
 %folder).
-%startdir = input('Please enter data directory:', 's');
-%shortcut for debugging purposes:
-startdir = '/data/USERS/LENORE';
+startdir = input('Please enter data directory:', 's');
 
 %Define script directory, so that it can be added to path below:
-%ScriptDirectory = input('Please enter script directory:', 's');
-ScriptDirectory = '/data/USERS/LENORE/scripts/dprc/diffusion';
+ScriptDirectory = input('Please enter script directory:', 's');
 
 %go to the directory where your scripts are.
 cd(ScriptDirectory);
@@ -141,7 +139,8 @@ for i = 1:length(participants)
     unix(['mrconvert gd', PAR_NAME, datafile,'.mif gd', PAR_NAME, datafile, '.nii']);
     
     %---------------------------------------------------------------------%
-    %intermediate steps: edit gradient files & organising
+    %OPTIONAL - intermediate steps: edit gradient files & organising
+    %This is if you need to edit/reorganise your dwi volumes - note that this had to be done specifically in this fashion below for DPRC data to follow UKB protocol 
     
     %edit gradient text files (bval & bvec files). We need to add on the
     %last B0 file (vol 106) to the dataset.
