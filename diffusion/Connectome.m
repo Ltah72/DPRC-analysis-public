@@ -296,8 +296,8 @@ end
     %run connectome stats
     unix(['connectomestats ConnectomeInput.txt tfnbs stats_matrices/design_matrix.txt stats_matrices/contrast_matrix.txt stats_results/ConnectomeWhole_stats/outputWhole_connectome_']);
    
-    %create connectome template to visualise group differences. 
-    CreateConnectomeTemplate(participants);
+    %create connectome template to visualise group differences. There is a function here, but it is formatted for HCP atlas. Can modify the function and/or make your own template.  
+    %CreateConnectomeTemplate(participants);
     
     %OPTIONAL - connectome of interest permuatation analysis. For a subnetwork, like the FPN, use vectorstats: 
     %unix(['vectorstats -strong FPN_small-node_Input.txt stats_matrices/design_matrix.txt stats_matrices/contrast_matrix.txt stats_results/FPN_stats/strong/smallNode/small-node_FPN_stats-']);
