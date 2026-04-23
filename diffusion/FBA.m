@@ -31,7 +31,7 @@
 %   b.Express the effect size relative to controls
 
 %Author: Lenore Tahara-Eckl
-%Email: Ltah262@aucklanduni.ac.nz
+%Email: Ltah262@aucklanduni.ac.nz or Ltahara2@gmail.com
 %Date: 30/06/20
 
 clc;
@@ -39,12 +39,10 @@ clear all;
 close all;
 
 %define/add pathways
-%startdir = input('Please enter derivatives directory:', 's');
-derivdir = '/data/USERS/LENORE/derivatives';
+derivdir = input('Please enter derivatives directory:', 's');
 
 %Script directory is defined, so that it can be added to path below:
-%ScriptDirectory = input('Please enter script directory:', 's');
-ScriptDirectory = '/data/USERS/LENORE/scripts/dprc/';
+ScriptDirectory = input('Please enter script directory:', 's');
 
 %should be the same groupname from what the user analysed in the CSD script.
 groupname = input('Which pre-processed group / study do you want to continue to analyse (e.g cross-sectional, longitudinal)?: ', 's');
@@ -186,50 +184,21 @@ CreateParticipantFixelList;
 %create contrast matrix to specify the tests and/or co-variates that you
 %will include in your analysis (e.g. contrast_matrix.txt)
 
-%Run statistical tests for each AFD metric
+%Run statistical tests for each fibre metric (e.g., FD, FC, FDC) - see examples below.
 k = 0;
 while true
-unix(['fixelcfestats -strong template/fd_smooth/ files_fd.txt stats_matrices/design_matrix_cov-age_sex.txt stats_matrices/contrast_matrix_cov-age_sex.txt template/matrix/ stats_fd_cov-age_sex/']);
-unix(['fixelcfestats -strong template/log_fc_smooth/ files_log_fc.txt stats_matrices/design_matrix_cov-age_sex.txt stats_matrices/contrast_matrix_cov-age_sex.txt template/matrix/ stats_log_fc_cov-age_sex/']);
-unix(['fixelcfestats -strong template/fdc_smooth/ files_fdc.txt stats_matrices/design_matrix_cov-age_sex.txt stats_matrices/contrast_matrix_cov-age_sex.txt template/matrix/ stats_fdc_cov-age_sex/']);
+unix(['fixelcfestats -strong template/fd_smooth/ files_fd.txt stats_matrices/design_matrix.txt stats_matrices/contrast_matrix.txt template/matrix/ stats_fd/']);
+unix(['fixelcfestats -strong template/log_fc_smooth/ files_log_fc.txt stats_matrices/design_matrix.txt stats_matrices/contrast_matrix.txt template/matrix/ stats_log_fc/']);
+unix(['fixelcfestats -strong template/fdc_smooth/ files_fdc.txt stats_matrices/design_matrix.txt stats_matrices/contrast_matrix.txt template/matrix/ stats_fdc/']);
 k = k+1;
 disp(k)
 times_run = k;
 end 
 
-%unix(['fixelcfestats group_FBA_files/fd_smooth_aMCI/ group_FBA_files/files_fd_aMCI.txt stats_matrices/design_matrix_whole_aMCI.txt stats_matrices/contrast_matrix_whole.txt template/matrix/ stats_fd_whole_aMCI/']);
-unix(['fixelcfestats group_FBA_files/log_fc_smooth_aMCI/ group_FBA_files/files_log_fc_aMCI.txt stats_matrices/design_matrix_whole_aMCI.txt stats_matrices/contrast_matrix_whole.txt template/matrix/ stats_log_fc_whole_aMCI/']);
-unix(['fixelcfestats group_FBA_files/fdc_smooth_aMCI/ group_FBA_files/files_fdc_aMCI.txt stats_matrices/design_matrix_whole_aMCI.txt stats_matrices/contrast_matrix_whole.txt template/matrix/ stats_fdc_whole_aMCI/']);
-
-unix(['fixelcfestats group_FBA_files/fd_smooth_mMCI/ group_FBA_files/files_fd_mMCI.txt stats_matrices/design_matrix_whole_mMCI.txt stats_matrices/contrast_matrix_whole.txt template/matrix/ stats_fd_whole_mMCI/']);
-unix(['fixelcfestats group_FBA_files/log_fc_smooth_mMCI/ group_FBA_files/files_log_fc_mMCI.txt stats_matrices/design_matrix_whole_mMCI.txt stats_matrices/contrast_matrix_whole.txt template/matrix/ stats_log_fc_whole_mMCI/']);
-unix(['fixelcfestats group_FBA_files/fdc_smooth_mMCI/ group_FBA_files/files_fdc_mMCI.txt stats_matrices/design_matrix_whole_mMCI.txt stats_matrices/contrast_matrix_whole.txt template/matrix/ stats_fdc_whole_mMCI/']);
-
-unix(['fixelcfestats group_FBA_files/fd_smooth_AD/ group_FBA_files/files_fd_AD.txt stats_matrices/design_matrix_whole_AD.txt stats_matrices/contrast_matrix_whole.txt template/matrix/ stats_fd_whole_AD/']);
-unix(['fixelcfestats group_FBA_files/log_fc_smooth_AD/ group_FBA_files/files_log_fc_AD.txt stats_matrices/design_matrix_whole_AD.txt stats_matrices/contrast_matrix_whole.txt template/matrix/ stats_log_fc_whole_AD/']);
-unix(['fixelcfestats group_FBA_files/fdc_smooth_AD/ group_FBA_files/files_fdc_AD.txt stats_matrices/design_matrix_whole_AD.txt stats_matrices/contrast_matrix_whole.txt template/matrix/ stats_fdc_whole_AD/']);
-
-unix(['fixelcfestats group_FBA_files/fd_smooth_C/ group_FBA_files/files_fd_C.txt stats_matrices/design_matrix_whole_C.txt stats_matrices/contrast_matrix_whole.txt template/matrix/ stats_fd_whole_C/']);
-unix(['fixelcfestats group_FBA_files/log_fc_smooth_C/ group_FBA_files/files_log_fc_C.txt stats_matrices/design_matrix_whole_C.txt stats_matrices/contrast_matrix_whole.txt template/matrix/ stats_log_fc_whole_C/']);
-unix(['fixelcfestats group_FBA_files/fdc_smooth_C/ group_FBA_files/files_fdc_C.txt stats_matrices/design_matrix_whole_C.txt stats_matrices/contrast_matrix_whole.txt template/matrix/ stats_fdc_whole_C/']);
-
-unix(['fixelcfestats group_FBA_files/fd_smooth_SCD/ group_FBA_files/files_fd_SCD.txt stats_matrices/design_matrix_whole_SCD.txt stats_matrices/contrast_matrix_whole.txt template/matrix/ stats_fd_whole_SCD/']);
-unix(['fixelcfestats group_FBA_files/log_fc_smooth_SCD/ group_FBA_files/files_log_fc_SCD.txt stats_matrices/design_matrix_whole_SCD.txt stats_matrices/contrast_matrix_whole.txt template/matrix/ stats_log_fc_whole_SCD/']);
-unix(['fixelcfestats group_FBA_files/fdc_smooth_SCD/ group_FBA_files/files_fdc_SCD.txt stats_matrices/design_matrix_whole_SCD.txt stats_matrices/contrast_matrix_whole.txt template/matrix/ stats_fdc_whole_SCD/']);
-
-
-%for correlations (last one - test out ACE with no NANs)
-unix(['fixelcfestats template/fd_smooth/ files_fd.txt stats_matrices/correlation/overall_correlation/design_matrix_overall_correlation_test_ACE.txt stats_matrices/correlation/overall_correlation/contrast_matrix_overall_correlation.txt template/matrix/ stats_fd/']);
-unix(['fixelcfestats template/log_fc_smooth/ files_log_fc.txt stats_matrices/correlation/overall_correlation/design_matrix_overall_correlation_test_ACE.txt stats_matrices/correlation/overall_correlation/contrast_matrix_overall_correlation.txt template/matrix/ stats_log_fc/']);
-unix(['fixelcfestats template/fdc_smooth/ files_fdc.txt stats_matrices/correlation/overall_correlation/design_matrix_overall_correlation_test_ACE.txt stats_matrices/correlation/overall_correlation/contrast_matrix_overall_correlation.txt template/matrix/ stats_fdc/']);
-
-unix(['fixelcfestats template/fd_smooth/ files_fd.txt stats_matrices/correlation/overall_correlation/design_matrix_overall_correlation_TrailsAZ.txt stats_matrices/correlation/overall_correlation/contrast_matrix_overall_correlation.txt template/matrix/ stats_fd_TrailsAZ/']);
-unix(['fixelcfestats template/log_fc_smooth/ files_log_fc.txt stats_matrices/correlation/overall_correlation/design_matrix_overall_correlation_TrailsAZ.txt stats_matrices/correlation/overall_correlation/contrast_matrix_overall_correlation.txt template/matrix/ stats_log_fc_TrailsAZ/']);
-unix(['fixelcfestats template/fdc_smooth/ files_fdc.txt stats_matrices/correlation/overall_correlation/design_matrix_overall_correlation_TrailsAZ.txt stats_matrices/correlation/overall_correlation/contrast_matrix_overall_correlation.txt template/matrix/ stats_fdc_TrailsAZ/']);
 
 
 
-%%%%% Below, you will need to manually edit these commands specific to your data. 
+%%%%% Below, you will need to manually edit these commands specific to your data. See examples below.  
 
 %-------------------------------------------------------------------------%
 %Step 8: Visualise results
@@ -246,12 +215,12 @@ unix(['fixelcfestats template/fdc_smooth/ files_fdc.txt stats_matrices/correlati
 %cropping streamlines from the template-derived whole-brain tractogram to include streamline points that correspond to significant fixels
 
 % a) Reduce number of streamlines to 200,000
-%unix(['tckedit template/tracks_2_million_sift.tck -num 200000 template/tracks_200k_sift.tck']);
+unix(['tckedit template/tracks_2_million_sift.tck -num 200000 template/tracks_200k_sift.tck']);
 
 %b) map fixel values to streamline points and save them in a 'track scalar file' (.tsf)
-%unix(['fixel2tsf stats_fd/fwe_1mpvalue.mif template/tracks_200k_sift.tck stats_fd/fd_WholeBrainfwe_pvalue.tsf']);
-%unix(['fixel2tsf stats_log_fc/fwe_1mpvalue.mif template/tracks_200k_sift.tck stats_log_fc/fc_WholeBrainfwe_pvalue.tsf']);
-%unix(['fixel2tsf stats_fdc/fwe_1mpvalue.mif template/tracks_200k_sift.tck stats_fdc/fdc_WholeBrainfwe_pvalue.tsf']);
+unix(['fixel2tsf stats_fd/fwe_1mpvalue.mif template/tracks_200k_sift.tck stats_fd/fd_WholeBrainfwe_pvalue.tsf']);
+unix(['fixel2tsf stats_log_fc/fwe_1mpvalue.mif template/tracks_200k_sift.tck stats_log_fc/fc_WholeBrainfwe_pvalue.tsf']);
+unix(['fixel2tsf stats_fdc/fwe_1mpvalue.mif template/tracks_200k_sift.tck stats_fdc/fdc_WholeBrainfwe_pvalue.tsf']);
 
 %c) visualise track scalar files using the tractogram tool in MRview. First
 %load the streamlines (tracks_200k_sift.tck). Then to dynamically threshold
@@ -259,9 +228,9 @@ unix(['fixelcfestats template/fdc_smooth/ files_fdc.txt stats_matrices/correlati
 %select “Separate Scalar file” and set to 0.95.
 
 %d) Smooth the .tsf file
-%unix(['tsfsmooth -stdev 4 stats_fd/fd_WholeBrainfwe_pvalue.tsf stats_fd/smoothed_fd_WholeBrainfwe_pvalue.tsf']);
-%unix(['tsfsmooth -stdev 4 stats_fc/fc_WholeBrainfwe_pvalue.tsf stats_fc/smoothed_fc_WholeBrainfwe_pvalue.tsf']);
-%unix(['tsfsmooth -stdev 4 stats_fdc/fdc_WholeBrainfwe_pvalue.tsf stats_fdc/smoothed_fdc_WholeBrainfwe_pvalue.tsf']);
+unix(['tsfsmooth -stdev 4 stats_fd/fd_WholeBrainfwe_pvalue.tsf stats_fd/smoothed_fd_WholeBrainfwe_pvalue.tsf']);
+unix(['tsfsmooth -stdev 4 stats_fc/fc_WholeBrainfwe_pvalue.tsf stats_fc/smoothed_fc_WholeBrainfwe_pvalue.tsf']);
+unix(['tsfsmooth -stdev 4 stats_fdc/fdc_WholeBrainfwe_pvalue.tsf stats_fdc/smoothed_fdc_WholeBrainfwe_pvalue.tsf']);
 
 
 %-------------------------------------------------------------------------%
@@ -275,11 +244,11 @@ unix(['fixelcfestats template/fdc_smooth/ files_fdc.txt stats_matrices/correlati
 
 %b) Expressing the effect size relative to controls
 %for fd
-%unix(['mrcalc stats_fd/abs_effect.mif stats_fd/beta0.mif  -div 100 -mult stats_fd/percentage_effect.mif']);
+unix(['mrcalc stats_fd/abs_effect.mif stats_fd/beta0.mif  -div 100 -mult stats_fd/percentage_effect.mif']);
 %for fdc
-%unix(['mrcalc stats_fdc/abs_effect.mif stats_fdc/beta0.mif  -div 100 -mult stats_fdc/percentage_effect.mif']);
+unix(['mrcalc stats_fdc/abs_effect.mif stats_fdc/beta0.mif  -div 100 -mult stats_fdc/percentage_effect.mif']);
 %for fc
-%unix(['mrcalc 1 1 stats_log_fc/abs_effect.mif -exp -div -sub stats_log_fc/percentage_effect.mif']);
+unix(['mrcalc 1 1 stats_log_fc/abs_effect.mif -exp -div -sub stats_log_fc/percentage_effect.mif']);
 
 
 
