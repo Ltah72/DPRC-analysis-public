@@ -8,7 +8,14 @@ function CreateSlspecFile()
 %https://fsl.fmrib.ox.ac.uk/fsl/fslwiki/https://fsl.fmrib.ox.ac.uk/fsl/fslwiki/eddy/Faqeddy/Faq
 
 
-fp = fopen('sub-ADPRC0001F0_acq_data_dwi.json','r');
+%define variables for the file
+PAR_NAME = input('Please name one participant from your analysis, e.g., sub-ADPRC0001F0: ', 's');
+%define dwi datafile
+datafile = '_acq_data_dwi';
+
+%open & modfiy the file
+fp = fopen([PAR_NAME, datafile, '.json'],'r');
+%can also just modify code here instead, e.g., fp = fopen('sub-ADPRC0001F0_acq_data_dwi.json','r');
 fcont = fread(fp);
 fclose(fp);
 cfcont = char(fcont');
