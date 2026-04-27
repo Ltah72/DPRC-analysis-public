@@ -27,29 +27,29 @@ groupname = input('Please name the group/study analysis: ', 's');
 
 %Choose directory where the diffusion data is (same level as sourcedata
 %folder).
-%startdir = input('Please enter derivatives directory:', 's');
+derivdir = input('Please enter derivatives directory:', 's');
 %shortcut for debugging purposes:
-derivdir = '/data/USERS/LENORE/derivatives';
+%e.g., derivdir = '/data/USERS/LENORE/derivatives';
 
 %Define script directory, so that it can be added to path below:
-%ScriptDirectory = input('Please enter script directory:', 's');
-ScriptDirectory = '/data/USERS/LENORE/scripts/dprc';
+ScriptDirectory = input('Please enter script directory:', 's');
+%e.g., ScriptDirectory = '/data/USERS/LENORE/scripts/dprc';
 
 %Define connectome directory, where most of the pre-required files lie.
-%ConnectomeDir = input('Please enter connectome directory:', 's');
-ConnectomeDir = ([derivdir, '/groups/' period '/diff_data/' groupname '/connectome/']);
+ConnectomeDir = input('Please enter connectome directory:', 's');
+%e.g., ConnectomeDir = ([derivdir, '/groups/' period '/diff_data/' groupname '/connectome/']);
 
 %Define fmriprep derivatives directory.
-%FmriprepDerDir = input('Please enter fmriprep derivatives directory:', 's');
-FmriprepDerDir = ([derivdir, '/fmriprepped_data/derivatives/fmriprep/']);
+FmriprepDerDir = input('Please enter fmriprep derivatives directory:', 's');
+%e.g., FmriprepDerDir = ([derivdir, '/fmriprepped_data/derivatives/fmriprep/']);
 
 %Define nuisance regressor (NR) removed derivatives directory.
-%NRDir = input('Please enter func denoised derivatives directory:', 's');
-NRDir = ([derivdir '/fMRI_denoised/']);
+NRDir = input('Please enter func denoised derivatives directory:', 's');
+%e.g., NRDir = ([derivdir '/fMRI_denoised/']);
 
 %If using RSN online maps, define directory: 
-%RSN-onlineDir = input('Please enter your downloaded RSN directory:', 's');
-RSN_onlineDir = ('/SOFTWARE/online_brain_templates/HCP_TFM-RSN/');
+RSN-onlineDir = input('Please enter your downloaded RSN directory:', 's');
+%e.g., RSN_onlineDir = ('/SOFTWARE/online_brain_templates/HCP_TFM-RSN/');
 
 %Create TW-FC directory for holding output data
 mkdir([derivdir,'/groups/' period '/diff_data/', groupname, '/TW-FC/']);
