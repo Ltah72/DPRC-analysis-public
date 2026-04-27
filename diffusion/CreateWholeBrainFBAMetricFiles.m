@@ -52,7 +52,7 @@ for i = 1:length(participants)
     %PAR_NAME = full_name(1:15);
     
     full_name = participants{i};
-    PAR_NAME = full_name(50:64);
+    PAR_NAME = full_name(50:64); %modify to fit the participant name
     
     %for FD
     fid6 = fopen('FD.txt', 'a+');
