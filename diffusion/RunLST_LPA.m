@@ -26,18 +26,18 @@ close all;
 %choose time period
 period = input('Which time period do you want to analyse, e.g. F0, F2, all, etc?: ', 's');
 
-%sourcedatadir = input('Please enter source data directory:', 's');
-sourcedatadir = ['/data/sourcedata/', period '/'];
+sourcedatadir = input('Please enter source data directory:', 's');
+%e.g., sourcedatadir = ['/data/sourcedata/', period '/'];
 
-%startdir = input('Please enter data directory:', 's');
-startdir = '/data/USERS/LENORE';
+startdir = input('Please enter data directory:', 's');
+%e.g., startdir = '/data/USERS/LENORE';
 
 %Script directory is defined, so that it can be added to path below:
-%ScriptDirectory = input('Please enter script directory:', 's');
-ScriptDirectory = '/data/USERS/LENORE/scripts/dprc/diffusion';
+ScriptDirectory = input('Please enter script directory:', 's');
+%e.g., ScriptDirectory = '/data/USERS/LENORE/scripts/dprc/diffusion';
 
-%sourcedatadir = input('Please enter your output WMH directory:', 's');
-output_WMH_dir = [startdir '/WMH_lesion_masks'];
+output_WMH_dir = input('Please enter your output WMH directory:', 's');
+%e.g., output_WMH_dir = [startdir '/WMH_lesion_masks'];
 
 %Add your script and all necessary files (e.g. data, functions) to path
 addpath(genpath(startdir));
