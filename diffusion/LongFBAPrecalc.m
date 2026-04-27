@@ -20,12 +20,12 @@ clear all;
 close all;
 
 %define/add pathways
-%startdir = input('Please enter derivatives directory:', 's');
-derivdir = '/data/USERS/LENORE/derivatives';
+derivdir = input('Please enter derivatives directory:', 's');
+%e.g., derivdir = '/data/USERS/LENORE/derivatives';
 
 %Script directory is defined, so that it can be added to path below:
-%ScriptDirectory = input('Please enter script directory:', 's');
-ScriptDirectory = '/data/USERS/LENORE/scripts/dprc/diffusion';
+ScriptDirectory = input('Please enter script directory:', 's');
+%e.g., ScriptDirectory = '/data/USERS/LENORE/scripts/dprc/diffusion';
 
 %should be the same groupname from what the user analysed in the CSD script.
 groupname = input('Which pre-processed group / study do you want to continue to analyse (e.g cross-sectional, longitudinal)?: ', 's');
@@ -48,7 +48,7 @@ cd([derivdir '/groups/' period, '/diff_data/' groupname, '/template/']);
 %choose participants
 participants = uipickfiles;
 
-for i = 1:2:length(participants) %choose every other participant
+for i = 1:2:length(participants) %choose every other participant - this is because of how the participant files are ordered as a list in our dataset. 
     
     [upper_path, PAR_NAME, ~] = fileparts(participants{1,i});
     PAR_NAME = PAR_NAME(1:13);
@@ -88,7 +88,4 @@ fclose(fid3);
 unix(['fixelcfestats template/fd_smooth_longit/ files_fd_longit.txt stats_matrices/design_matrix_group_diff.txt stats_matrices/contrast_matrix_group_diff.txt template/matrix/ stats_fd_longit/']);
 unix(['fixelcfestats template/log_fc_smooth_longit/ files_log_fc_longit.txt stats_matrices/design_matrix_group_diff.txt stats_matrices/contrast_matrix_group_diff.txt template/matrix/ stats_log_fc_longitx/']);
 unix(['fixelcfestats template/fdc_smooth_longit/ files_fdc_longit.txt stats_matrices/design_matrix_group_diff.txt stats_matrices/contrast_matrix_group_diff.txt template/matrix/ stats_fdc_longit/']);
-
-
-
 
