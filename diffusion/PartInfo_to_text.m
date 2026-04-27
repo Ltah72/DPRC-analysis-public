@@ -35,7 +35,7 @@ end
 %go to dicom data location
 cd (ParticipantsDicomDataLocation);
 
-%include all ADPRC participants
+%include all ADPRC participants - modify this according to your participant files names.
 ADPRC_count = dir(['ADPRC_0*']);
 
 %organise and extract specific data from each participant
