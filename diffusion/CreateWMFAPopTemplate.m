@@ -7,12 +7,12 @@
 %Date: 11/10/21
 
 %define/add pathways
-%startdir = input('Please enter derivatives directory:', 's');
-derivdir = '/data/USERS/LENORE/derivatives';
+derivdir = input('Please enter derivatives directory:', 's');
+%e.g., derivdir = '/data/USERS/LENORE/derivatives';
 
 %Script directory is defined, so that it can be added to path below:
-%ScriptDirectory = input('Please enter script directory:', 's');
-ScriptDirectory = '/data/USERS/LENORE/scripts/dprc';
+ScriptDirectory = input('Please enter script directory:', 's');
+%e.g., ScriptDirectory = '/data/USERS/LENORE/scripts/dprc';
 
 %should be the same groupname from what the user analysed in the preproccessing script.
 groupname = input('Which pre-processed group / study do you want to continue to analyse, e.g, cross-sectional, longitudinal, etc?: ', 's');
@@ -33,7 +33,7 @@ datafile = '_acq_data_dwi';
 %go back into participant derivatives folder
 cd([derivdir '/groups/' period, '/diff_data/' groupname, '/IN/preprocessed_dwi/']);
 
-%choose participants for analysis (do not include excluded participants). 
+%choose participants for analysis (do not include excluded participants). It has been advised from the MRtrix guideline that around 40 participants is a good number.  
 msgfig = 'Choose participants for FA population template (~40). You should have an even number of participants to represent each group.';
 uiwait(msgbox(msgfig));
 participants = uipickfiles;
