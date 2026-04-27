@@ -26,10 +26,12 @@ close all;
 
 
 %define/add pathways
-startdir = '/data/USERS/LENORE';
+startdir = input('Please enter data directory:', 's');
+%e.g., startdir = '/data/USERS/LENORE';
 
 %Script directory is defined, so that it can be added to path below:
-ScriptDirectory = '/data/USERS/LENORE/scripts/dprc/diffusion';
+ScriptDirectory = input('Please enter script directory:', 's');
+%e.g., ScriptDirectory = '/data/USERS/LENORE/scripts/dprc/diffusion';
 
 %should be the same groupname from what the user analysed in the FBA script.  
 groupname = input('Which pre-processed group / study do you want to continue to analyse?: ', 's');
@@ -51,7 +53,6 @@ participants = dir(fullfile('preprocessed_dwi', '*.mif'));
 %Add your script and all necessary files (e.g. data, functions) to path
 addpath(genpath(startdir));
 addpath(genpath(ScriptDirectory));
-
 
 %copy needed files into the TOI directory
 copyfile ([startdir '/derivatives/' period, '/diff_data/' groupname '/wmfod_template.mif'], [startdir,'/derivatives/' period, '/diff_data/', groupname '/' TOI]);
