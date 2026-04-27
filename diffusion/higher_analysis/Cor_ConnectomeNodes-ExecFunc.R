@@ -1,5 +1,6 @@
 #This script will analyse the correlation between the connectome node values and
-#and the neuropsychological assesssment data. 
+#and the neuropsychological assesssment data. Partial least squares (PLS) analysis 
+#is being used for this. See the examples provided below. 
 
 
 #Author: Lenore Tahara-Eckl
@@ -10,28 +11,31 @@
 #install packages/open libraries
 pacman::p_load(ggplot2, ppcor, dplyr, tidyr,corrplot)
 
-#first read in the neuropsych data file: 
-#setwd('/yourpathway/')
-setwd('H:/ltah262/PhD/ExecutiveFunction/NeuroPsychAssessment/data/')
+#first read in the neuropsych data file - define your pathway: 
+setwd('/yourpathway/')
+#e.g., setwd('H:/ltah262/PhD/ExecutiveFunction/NeuroPsychAssessment/data/')
 
 #----- Neuropsych data --------------------------------------------------------#
 
 #read in csv files (participant file)
-DPRC_neuropsych_data <- read.csv("cross-sectional_DPRC_neuropsych_data_lined_up_valid_participants.csv")
+your_data_file <- read.csv("your_data_file.csv")
+#e.g., DPRC_neuropsych_data <- read.csv("cross-sectional_DPRC_neuropsych_data_lined_up_valid_participants.csv")
 
-#rename first column 
-colnames(DPRC_neuropsych_data)[1] <-'ParticipantID'
+#rename first column - if this is your participant IDs
+colnames(your_data_file)[1] <-'ParticipantID'
+#e.g., colnames(DPRC_neuropsych_data)[1] <-'ParticipantID'
 
-#convert variables
-DPRC_neuropsych_data$Group <- as.factor(DPRC_neuropsych_data$Group)
-DPRC_neuropsych_data$Sex <- as.factor(DPRC_neuropsych_data$Sex)
-DPRC_neuropsych_data$Sex_binary <- as.factor(DPRC_neuropsych_data$Sex_binary)
+#convert variables - do this according to your file
+your_data_file$Group <- as.factor(your_data_file$Group)
+your_data_file$Sex <- as.factor(your_data_file$Sex)
+your_data_file$Sex_binary <- as.factor(your_data_file$Sex_binary)
 
-#for the connectome data, omit 2 participants from the dataset (DDPRC0025F0 (row 221) & DDPRC0029F0 (row 223))
-omit_participants <- c("221","223")
-DPRC_neuropsych_data <- DPRC_neuropsych_data[!(row.names(DPRC_neuropsych_data) %in% omit_participants), ]
+#OPTIONAL: omit any excluded participants
+#e.g., omit_participants <- c("221","223")
+your_data_file <- your_data_file[!(row.names(your_data_file) %in% omit_participants), ]
 
 #create new columns for the connectome data
+#nrow is the number of participants
 small_node_data <- setNames(data.frame(matrix(ncol = 10, nrow = 227)), c("L-DLPFC--R-DLPFC","L-DLPFC--MidCing",
                                                     "R-DLPFC--MidCing","L-DLPFC--L-Par",
                                                     "R-DLPFC--R-Par","L-DLPFC--R-Par",
@@ -39,10 +43,11 @@ small_node_data <- setNames(data.frame(matrix(ncol = 10, nrow = 227)), c("L-DLPF
                                                     "L-Par--MidCing","R-Par--MidCing"))
 
 #navigate to connectome data pathway
-setwd('V:/Vault/NECTAR_data/LENORE/derivatives/groups/F0/diff_data/cross-sectional/connectome/FPN_Files/weighted/small-nodes')
+setwd('/yourpathway/to/connectome/data')
+#e.g., setwd('V:/Vault/NECTAR_data/LENORE/derivatives/groups/F0/diff_data/cross-sectional/connectome/FPN_Files/weighted/small-nodes')
 
 #collate connectome values into dataset
-filenames <- list.files(path='V:/Vault/NECTAR_data/LENORE/derivatives/groups/F0/diff_data/cross-sectional/connectome/FPN_Files/weighted/small-nodes')
+filenames <- list.files(path='/yourpathway/to/connectome/data')
 r.nms <- c("1", "2", "3", "4", "5", "6", "7", "8", "9", "10")
 AllData <- lapply(filenames, read.table, header=FALSE, row.names=r.nms, col.names="V1")
 
@@ -53,7 +58,7 @@ for(i in sequence(length(filenames))){
 }
 
 #combine neuropsych and connectome dataset
-Connectome_data <- cbind(DPRC_neuropsych_data,small_node_data)
+Connectome_data <- cbind(your_data_file,small_node_data)
 
 
 #### ----------------------- PLS visualisation ---------------------------- ####
