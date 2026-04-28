@@ -15,22 +15,21 @@ pacman::p_load(dplyr, ggplot2, psych, car, lsr, BayesFactor, RColorBrewer)
 #add any necessary sources: 
 source("https://raw.githubusercontent.com/datavizpyr/data/master/half_flat_violinplot.R") #for raincloud graph
 
-#load in pathway for functions
-#source('path/tofile/here.R')
-#source('H:/ltah262/PhD/Diffusion/script/dprc/neuropsych/insertRow.R')
+#load in pathway for functions, such as the insertRow.r function (if needed)
+source('path/tofile/here.R')
+#e.g., source('H:/ltah262/PhD/Diffusion/script/dprc/neuropsych/insertRow.R')
 
 #set up pathway
-#setwd('/yourpathway/')
-setwd('H:/ltah262/PhD/ExecutiveFunction/NeuroPsychAssessment/data/')
+setwd('/yourpathway/')
+#e.g., setwd('H:/ltah262/PhD/ExecutiveFunction/NeuroPsychAssessment/data/')
 
 
 
 #######----------------- Cross-sectional (F0) analysis -----------------########
 
 #read in excel files (participant file) - choose cross-sectional or longitudinal analysis
-DPRC_demographics <- read.csv("cross-sectional_DPRC_neuropsych_data_lined_up_valid_participants.csv") #cross-sectional
-#for connectome data (n = 227)
-#DPRC_demographics <- read.csv("connectome_DPRC_neuropsych_data_lined_up_valid_participants.csv") #omit 2 participants from the dataset (DDPRC0025F0 (row 221) & DDPRC0029F0 (row 223))
+your_file_name <- read.csv("your_file_name.csv") #cross-sectional
+#e.g., DPRC_demographics <- read.csv("cross-sectional_DPRC_neuropsych_data_lined_up_valid_participants.csv")
 
 #rename first column 
 colnames(DPRC_demographics)[1] <-'ParticipantID'
@@ -82,8 +81,8 @@ sd(noNAsACE)
 
 
 ####---------------------plot & analyse the data to visualise-------------------------------#####
-
-#plot age (violin plot)
+#Examples of plotting data
+#plot age (as a violin plot)
 ggplot(DPRC_demographics, aes(x = Group, y = Age)) + 
     geom_boxplot(width = 0.1, fill = "white", outlier.size = 1, aes(colour = Group)) + 
     stat_summary(fun = mean, geom = "point", shape = 19, size = 2, aes(colour = Group)) + 
@@ -95,7 +94,7 @@ ggplot(DPRC_demographics, aes(x = Group, y = Age)) +
     theme(legend.position = "none") +
     geom_violin(trim = FALSE, alpha = .5, aes(fill = Group, colour = Group), size = 1)
 
-#plot age (raincloud plot)
+#plot age (as a raincloud plot)
 ggplot(DPRC_demographics, aes(x = Group, y = Age, fill = Group)) + 
     geom_flat_violin(position = position_nudge(x = .2, y = 0), alpha = .8) +
     geom_point(aes(y = Age, color = Group), position = position_jitter(width = .15), size = .5, alpha = 0.8) +
@@ -121,42 +120,6 @@ ggplot(data=gender_data, aes(x=Group, y=Count, fill=Sex)) +
     theme_bw() + 
     theme(panel.border = element_blank(), panel.grid.major = element_blank(), panel.grid.minor = element_blank(), axis.line = element_line(colour = "black"))
 
-#plot clinical site
-location_data <- data.frame(table(DPRC_demographics$Classification, DPRC_demographics$Clinical_site))
-names(location_data) <- c("Group", "Clinical_site", "Count")
-location_data <- location_data %>% arrange(factor(Group, levels=Group_order))
-location_data$Group <- factor(location_data$Group, levels=c("C", "SCD", "aMCI", "mMCI", "AD"))
-
-ggplot(data=location_data, aes(x=Group, y=Count, fill=Clinical_site)) +
-    geom_bar(stat="identity") +
-    scale_fill_discrete(name = "Clinical Site") + 
-    theme_bw() + 
-    theme(panel.border = element_blank(), panel.grid.major = element_blank(), panel.grid.minor = element_blank(), axis.line = element_line(colour = "black"))
-
-#plot ACE (violin plot)
-ggplot(DPRC_demographics, aes(x = Group, y = ACE)) + 
-    geom_boxplot(width = 0.1, fill = "white", outlier.size = 1, aes(colour = Group)) + 
-    stat_summary(fun = mean, geom = "point", shape = 19, size = 2, aes(colour = Group)) + 
-    xlab("Group") + 
-    ylab("ACE Score") +
-    scale_x_discrete(labels = c("1" = "Control", "2" = "SCD", "3" = "aMCI", "4" = "mMCI", "5" = "AD")) + 
-    theme_classic() +
-    theme(legend.position = "none") +
-    geom_violin(trim = FALSE, alpha = .5, aes(fill = Group, colour = Group), size = 1)
-
-#plot ACE (raincloud plot)
-ggplot(DPRC_demographics, aes(x = Group, y = ACE, fill = Group)) + 
-    geom_flat_violin(position = position_nudge(x = .2, y = 0), alpha = .8) +
-    geom_point(aes(y = ACE, color = Group), position = position_jitter(width = .15), size = .5, alpha = 0.8) +
-    geom_boxplot(width = 0.1, fill = "white", outlier.size = 1, aes(colour = Group)) + 
-    stat_summary(fun = mean, geom = "point", shape = 19, size = 2, aes(colour = Group)) + 
-    xlab("Group") + 
-    ylab("ACE Score") +
-    scale_x_discrete(labels = c("1" = "Control", "2" = "SCD", "3" = "aMCI", "4" = "mMCI", "5" = "AD")) + 
-    theme_classic() +
-    theme(legend.position = "none") +
-    coord_flip()
-
 #linear trend example plot
 #DPRC_demographics$Group <- as.numeric(DPRC_demographics$Group)
 ggplot(DPRC_demographics, aes(x = Group, y = ACE, fill = Group)) + 
@@ -170,38 +133,9 @@ ggplot(DPRC_demographics, aes(x = Group, y = ACE, fill = Group)) +
 
 
 
-# #plot FBA metrics--
-# #for FD:
-# ggplot(subset(covariates_data, Group %in% c("1", "2", "3", "4", "5")), aes(x = Group, y = Mean_FD)) + 
-#     geom_boxplot(width = 0.5, fill = "white", outlier.size = 1, aes(colour = Group)) + 
-#     stat_summary(fun = mean, geom = "point", shape = 19, size = 2, aes(colour = Group)) + 
-#     xlab("Group") + 
-#     ylab("Fibre Density (FD)") +
-#     scale_x_discrete(labels = c("1" = "Control", "2" = "SCD", "3" = "aMCI", "4" = "mMCI", "5" = "AD")) + 
-#     theme_classic() +
-#     theme(legend.position = "none")
-# #for FC:
-# ggplot(subset(covariates_data, Group %in% c("1", "2", "3", "4", "5")), aes(x = Group, y = Mean_FC)) + 
-#     geom_boxplot(width = 0.5, fill = "white", outlier.size = 1, aes(colour = Group)) + 
-#     stat_summary(fun = mean, geom = "point", shape = 19, size = 2, aes(colour = Group)) + 
-#     xlab("Group") + 
-#     ylab("Fibre Cross-section (FC)") +
-#     scale_x_discrete(labels = c("1" = "Control", "2" = "SCD", "3" = "aMCI", "4" = "mMCI", "5" = "AD")) + 
-#     theme_classic() +
-#     theme(legend.position = "none")
-# #for FDC:
-# ggplot(subset(covariates_data, Group %in% c("1", "2", "3", "4", "5")), aes(x = Group, y = Mean_FDC)) + 
-#     geom_boxplot(width = 0.5, fill = "white", outlier.size = 1, aes(colour = Group)) + 
-#     stat_summary(fun = mean, geom = "point", shape = 19, size = 2, aes(colour = Group)) + 
-#     xlab("Group") + 
-#     ylab("Fibre Density Cross-section (FDC)") +
-#     scale_x_discrete(labels = c("1" = "Control", "2" = "SCD", "3" = "aMCI", "4" = "mMCI", "5" = "AD")) + 
-#     theme_classic() +
-#     theme(legend.position = "none")
 
 
-
-#check for significant difference in age between groups 
+#check for significant difference in age between groups example
 age_mod <- lm(Age ~ Classification, data = DPRC_demographics)
 #age_mod <- lm(Age ~ 0 + Classification, data = DPRC_demographics) #test against y-intercept
 anova(age_mod)
@@ -219,8 +153,9 @@ power_age_n <- power.anova.test(groups = length(age_group_means), between.var = 
 power_age_power<- power.anova.test(groups = length(ACE_group_means), between.var = anova(age_mod)$`Sum Sq`[1], within.var = anova(age_mod)$`Sum Sq`[2], n = 41, sig.level = 0.05)
 
 
-#check for significant difference in gender between groups 
+#check for significant difference in gender between groups example. 
 #reformat data for chi-square test
+#note that you will need to manually enter the number of females and males per each group you have
 gender_data_chisq <- rbind(c(27,38,24,27,7), c(8,22,31,25,20))
 colnames(gender_data_chisq) <- c("C", "SCD", "aMCI", "mMCI", "AD")
 rownames(gender_data_chisq) <- c("F", "M")
@@ -230,21 +165,7 @@ contingencyTableBF(gender_data_chisq, sampleType = "jointMulti")
 #a good resource on running Bayesian chi-squared tests: https://stats.libretexts.org/Bookshelves/Applied_Statistics/Book%3A_Learning_Statistics_with_R_-_A_tutorial_for_Psychology_Students_and_other_Beginners_(Navarro)/17%3A_Bayesian_Statistics/17.06%3A_Bayesian_Analysis_of_Contingency_Tables
 cramersV(gender_data_chisq)
 
-
-#check for significant difference in clinical site between groups 
-#reformat data for chi-square test
-location_data_chisq <- rbind(c(33,45,36,38,20), c(2,6,13,11,2), c(0,9,6,3,5))
-colnames(location_data_chisq) <- c("C", "SCD", "aMCI", "mMCI", "AD")
-rownames(location_data_chisq) <- c("Auckland", "Christchurch", "Dunedin")
-#run chi-square test
-location_chi_test <- chisq.test(location_data_chisq)
-contingencyTableBF(location_data_chisq, sampleType = "jointMulti")
-cramersV(location_data_chisq)
-#if expected values in cells are too small, simulate more p-values:
-#location_chi_test <- chisq.test(location_data_chisq, simulate.p.value = TRUE)
-
-
-#check for homogeneity of variance
+#check for homogeneity of variance, example with age variable 
 leveneTest(ACE~Group, data=DPRC_demographics) #violation
 #check for significant difference in ACE between groups 
 ACE_mod <- lm(ACE ~ Group, data = DPRC_demographics)
@@ -253,7 +174,7 @@ summary(ACE_mod) #for linear trend analysis
 anovaBF(ACE ~ Group, data = For_Bay_data_noNas) 
 etaSquared(ACE_mod)
 
-#conduct power analysis for ACE
+#conduct power analysis, example with ACE variable 
 ACE_group_means <- c(ACE_descrip$`1`$mean, ACE_descrip$`2`$mean, ACE_descrip$`3`$mean, ACE_descrip$`4`$mean, ACE_descrip$`5`$mean)
 #power_ACE <- power.anova.test(groups = length(ACE_group_means), between.var = var(ACE_group_means), within.var = 7850.6, power = .8, sig.level = 0.05)
 power_ACE_n <- power.anova.test(groups = length(ACE_group_means), between.var = anova(ACE_mod)$`Sum Sq`[1], within.var = anova(ACE_mod)$`Sum Sq`[2], power = .8, sig.level = 0.05)
