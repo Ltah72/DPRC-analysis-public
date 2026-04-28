@@ -193,7 +193,6 @@ leveneTest(Age ~ Group, data = DPRC_demographics)
 #Perform a Shapiro-Wilk test for normality of residuals
 shapiro.test(age_mod$residuals)
 
-
 #plot groups in a pie chart
 group_number <- c(35,60,55,52,27) #will need to modify this
 myPalette <- brewer.pal(5,"Purples")
@@ -229,12 +228,9 @@ ggplot(df_circle_plot, aes(x = group_names, y = group_number)) +
 
 #######--------------- Longitudinal (F0 vs. F2) analysis ---------------########
 
-
-#read in excel files (participant file) - choose cross-sectional or longitudinal analysis (n = 124)
-DPRC_demographics <- read.csv("longitudinal_DPRC_neuropsych_data_lined_up_valid_participants.csv") #longitudinal
-
-#for functional-diffusion connectome, longitudinal study (n = 119)
-#DPRC_demographics <- read.csv("fMRI_dMRI_longitudinal_DPRC_neuropsych_data_lined_up_valid_participants.csv")
+#read in excel files (participant data file)
+DPRC_demographics <- read.csv("your_data_file_longitudinal.csv") #longitudinal
+#e.g., DPRC_demographics <- read.csv("longitudinal_DPRC_neuropsych_data_lined_up_valid_participants.csv") #longitudinal
 
 #rename first column
 colnames(DPRC_demographics)[1] <-'ParticipantID'
@@ -254,71 +250,17 @@ ACE_descrip <- describeBy(DPRC_demographics$ACE, list(DPRC_demographics$Group, D
 gender_descrip <- by(DPRC_demographics$Group, list(DPRC_demographics$Sex, DPRC_demographics$Timepoint), summary)
 clinsite_descrip <- by(DPRC_demographics$Group, list(DPRC_demographics$Clinical_site, DPRC_demographics$Timepoint), summary)
 
-
 ####---------------------plot & analyse the data to visualise-------------------------------####
 
 #take a subset of the DPRC data - only baseline data (F0) to display in graphs
 baseline_DPRC_demographics <- DPRC_demographics[ which(DPRC_demographics$Timepoint=='F0'), ]
 
 #whole sample descriptives
-#Age
-mean(baseline_DPRC_demographics$Age)
-sd(baseline_DPRC_demographics$Age)
 #ACE
 mean(baseline_DPRC_demographics$ACE)
 sd(baseline_DPRC_demographics$ACE)
 
-#plot age (violin plot) - only for baseline (F0)
-ggplot(baseline_DPRC_demographics, aes(x = Group, y = Age)) + 
-    geom_boxplot(width = 0.1, fill = "white", outlier.size = 1, aes(colour = Group)) + 
-    stat_summary(fun = mean, geom = "point", shape = 19, size = 2, aes(colour = Group)) + 
-    ylim(50, 95) +
-    xlab("Group") + 
-    ylab("Age") +
-    scale_x_discrete(labels = c("1" = "Control", "2" = "SCD", "3" = "aMCI", "4" = "mMCI", "5" = "AD")) + 
-    theme_classic() +
-    theme(legend.position = "none") +
-    geom_violin(trim = FALSE, alpha = .5, aes(fill = Group, colour = Group), size = 1)
-
-#plot age (raincloud plot)
-ggplot(baseline_DPRC_demographics, aes(x = Group, y = Age, fill = Group)) + 
-    geom_flat_violin(position = position_nudge(x = .2, y = 0), alpha = .8) +
-    geom_point(aes(y = Age, color = Group), position = position_jitter(width = .15), size = .5, alpha = 0.8) +
-    geom_boxplot(width = 0.1, fill = "white", outlier.size = 1, aes(colour = Group)) + 
-    stat_summary(fun = mean, geom = "point", shape = 19, size = 2, aes(colour = Group)) + 
-    ylim(50, 95) +
-    xlab("Group") + 
-    ylab("Age") +
-    scale_x_discrete(labels = c("1" = "Control", "2" = "SCD", "3" = "aMCI", "4" = "mMCI", "5" = "AD")) + 
-    theme_classic() +
-    theme(legend.position = "none") +
-    coord_flip()
-
-#plot gender
-gender_data <- data.frame(table(baseline_DPRC_demographics$Classification, baseline_DPRC_demographics$Sex))
-names(gender_data) <- c("Group", "Sex", "Count")
-Group_order <- c("C", "SCD", "aMCI", "mMCI", "AD")
-gender_data <- gender_data %>% arrange(factor(Group, levels=Group_order))
-gender_data$Group <- factor(gender_data$Group, levels=c("C", "SCD", "aMCI", "mMCI", "AD"))
-
-ggplot(data=gender_data, aes(x=Group, y=Count, fill=Sex)) +
-    geom_bar(stat="identity") + 
-    theme_bw() + 
-    theme(panel.border = element_blank(), panel.grid.major = element_blank(), panel.grid.minor = element_blank(), axis.line = element_line(colour = "black"))
-
-#plot clinical site
-location_data <- data.frame(table(baseline_DPRC_demographics$Classification, baseline_DPRC_demographics$Clinical_site))
-names(location_data) <- c("Group", "Clinical_site", "Count")
-location_data <- location_data %>% arrange(factor(Group, levels=Group_order))
-location_data$Group <- factor(location_data$Group, levels=c("C", "SCD", "aMCI", "mMCI", "AD"))
-
-ggplot(data=location_data, aes(x=Group, y=Count, fill=Clinical_site)) +
-    geom_bar(stat="identity") +
-    scale_fill_discrete(name = "Clinical Site") + 
-    theme_bw() + 
-    theme(panel.border = element_blank(), panel.grid.major = element_blank(), panel.grid.minor = element_blank(), axis.line = element_line(colour = "black"))
-
-#plot ACE (violin plot) - for F0
+#plot ACE (violin plot) - for F0, baseline, example
 ggplot(baseline_DPRC_demographics, aes(x = Group, y = ACE)) + 
     geom_boxplot(width = 0.1, fill = "white", outlier.size = 1, aes(colour = Group)) + 
     stat_summary(fun = mean, geom = "point", shape = 19, size = 2, aes(colour = Group)) + 
@@ -328,7 +270,7 @@ ggplot(baseline_DPRC_demographics, aes(x = Group, y = ACE)) +
     theme_classic() +
     theme(legend.position = "none") +
     geom_violin(trim = FALSE, alpha = .5, aes(fill = Group, colour = Group), size = 1)
-#plot ACE (violin plot) - for F0 vs. F2
+#plot ACE (violin plot) - for F0 vs. F2, longitudinal example
 ggplot(DPRC_demographics, aes(x = Group, y = ACE, fill = Timepoint)) + 
     geom_boxplot(width = 0.1, fill = "white", outlier.size = 1, aes(colour = Timepoint), position = position_dodge(.9)) + 
     stat_summary(fun = mean, geom = "point", shape = 19, size = 2, aes(colour = Timepoint), position = position_dodge(.9)) + 
