@@ -131,10 +131,6 @@ ggplot(DPRC_demographics, aes(x = Group, y = ACE, fill = Group)) +
     theme(legend.position = "none")
 #DPRC_demographics$Group <- as.factor(DPRC_demographics$Group)
 
-
-
-
-
 #check for significant difference in age between groups example
 age_mod <- lm(Age ~ Classification, data = DPRC_demographics)
 #age_mod <- lm(Age ~ 0 + Classification, data = DPRC_demographics) #test against y-intercept
@@ -165,7 +161,7 @@ contingencyTableBF(gender_data_chisq, sampleType = "jointMulti")
 #a good resource on running Bayesian chi-squared tests: https://stats.libretexts.org/Bookshelves/Applied_Statistics/Book%3A_Learning_Statistics_with_R_-_A_tutorial_for_Psychology_Students_and_other_Beginners_(Navarro)/17%3A_Bayesian_Statistics/17.06%3A_Bayesian_Analysis_of_Contingency_Tables
 cramersV(gender_data_chisq)
 
-#check for homogeneity of variance, example with age variable 
+#check for homogeneity of variance, example with ACE variable 
 leveneTest(ACE~Group, data=DPRC_demographics) #violation
 #check for significant difference in ACE between groups 
 ACE_mod <- lm(ACE ~ Group, data = DPRC_demographics)
@@ -190,218 +186,16 @@ ACE_LinTrendZeroCont_mod <- lm(ACE ~ Trend_Group_equate_zero_contrast + Group, d
 anova(ACE_LinTrendZeroCont_mod)
 summary(ACE_LinTrendZeroCont_mod)
 
-# #check for significant difference in FBA metrics between groups 
-# FD_mod <- lm(Mean_FD ~ Group, data = covariates_data)
-# anova(FD_mod)
-# FC_mod <- lm(Mean_FC ~ Group, data = covariates_data)
-# anova(FC_mod)
-# FDC_mod <- lm(Mean_FDC ~ Group, data = covariates_data)
-# anova(FDC_mod)
-# 
-
-#quick view of the data
+#quick view of the data, for the age variable 
 plot(age_mod)
-
-
-#Perform Levene's Test for homogenity of variances
+#Perform Levene's Test for homogenity of variances 
 leveneTest(Age ~ Group, data = DPRC_demographics)
-
-
-# leveneTest(Mean_FD ~ Group, data = covariates_data)
-# leveneTest(Mean_FD ~ Sex, data = covariates_data)
-
 #Perform a Shapiro-Wilk test for normality of residuals
 shapiro.test(age_mod$residuals)
 
 
-# #check to see if variables have a linear relationship (e.g. age vs. white matter integrity metrics)
-# #for Mean FD
-# ggplot(subset(covariates_data, Group %in% c("1", "2", "3", "4", "5")), aes(x = Age, y = Mean_FD, shape = Group, color = Group)) +
-#     geom_point() +
-#     geom_smooth(method="lm", formula= y~x, se=FALSE) +
-#     ggtitle("Age vs. Fibre Density (FD)") +
-#     theme(plot.title = element_text(hjust=0.5))
-#     #scale_x_discrete(labels = c("1"="Control", "2"="SCD", "3"="aMCI", "4"="mMCI", "5"="AD")) 
-#     
-# 
-# #for Mean FC
-# ggplot(subset(covariates_data, Group %in% c("1", "2", "3", "4", "5")), aes(x = Age, y = Mean_FC, shape = Group, color = Group)) +
-#     geom_point() +
-#     geom_smooth(method="lm", formula= y~x, se=FALSE) +
-#     ggtitle("Age vs. Fibre Cross-section (FC)") +
-#     theme(plot.title = element_text(hjust=0.5))
-# 
-# 
-# #for Mean FDC
-# ggplot(subset(covariates_data, Group %in% c("1", "2", "3", "4", "5")), aes(x = Age, y = Mean_FDC, shape = Group, color = Group)) +
-#     geom_point() +
-#     geom_smooth(method="lm", formula= y~x, se=FALSE) +
-#     ggtitle("Age vs. Fibre Density Cross-section (FDC)") +
-#     theme(plot.title = element_text(hjust=0.5))
-# 
-# 
-# 
-# 
-# #all 3 metrics (FD, FC, FDC)
-# ggplot(subset(covariates_data, Group %in% c("1", "2", "3", "4", "5")), aes(x = Age)) +
-#     geom_point(aes(y=Mean_FD, color="Mean_FD")) + 
-#     geom_smooth(aes(y=Mean_FD, color="Mean_FD"), method="lm", formula= y~x, se=FALSE) +
-#     geom_point(aes(y=Mean_FC, color="Mean_FC")) + 
-#     geom_smooth(aes(y=Mean_FC, color="Mean_FC"), method="lm", formula= y~x, se=FALSE) +
-#     geom_point(aes(y=Mean_FDC, color="Mean_FDC")) + 
-#     geom_smooth(aes(y=Mean_FDC, color="Mean_FDC"), method="lm", formula= y~x, se=FALSE) +
-#     ylab("Fixel-Based Analysis (FBA) metrics") +
-#     ggtitle("Age vs. all 3 metrics (FD, FC, & FDC)") +
-#     theme(plot.title = element_text(hjust=0.5))
-# 
-# 
-# 
-# plot(covariates_data$Age, covariates_data$Mean_FD)
-# 
-# 
-# 
-# #check for significance with age and between age x group and white matter integrity (FBA metrics)
-# #run correlation + simple linear regression between age and white matter metrics
-# #for FD
-# Age_FBA_FD_cor <- cor.test(covariates_data$Age, covariates_data$Mean_FD)
-# Age_FBA_FD_mod <- lm(Mean_FD ~ Age, data = covariates_data)
-# summary(Age_FBA_FD_mod)
-# anova(Age_FBA_FD_mod)
-# #for FC
-# Age_FBA_FC_cor <- cor.test(covariates_data$Age, covariates_data$Mean_FC)
-# Age_FBA_FC_mod <- lm(Mean_FC ~ Age, data = covariates_data)
-# summary(Age_FBA_FC_mod)
-# #for FDC
-# Age_FBA_FDC_cor <- cor.test(covariates_data$Age, covariates_data$Mean_FDC)
-# Age_FBA_FDC_mod <- lm(Mean_FDC ~ Age, data = covariates_data)
-# summary(Age_FBA_FDC_mod)
-# 
-# #run multiple linear regression on age x group and white matter integrity (FBA metrics)
-# #for FD
-# AgexGroup_FD_mult_mod <- lm(Mean_FD ~ Age + Group + Age:Group, data = covariates_data)
-# summary(AgexGroup_FD_mult_mod)
-# anova(AgexGroup_FD_mult_mod)
-# #for FC
-# AgexGroup_FC_mult_mod <- lm(Mean_FC ~ Age + Group + Age:Group, data = covariates_data)
-# summary(AgexGroup_FC_mult_mod)
-# anova(AgexGroup_FC_mult_mod)
-# #for FDC
-# AgexGroup_FDC_mult_mod <- lm(Mean_FDC ~ Age + Group + Age:Group, data = covariates_data)
-# summary(AgexGroup_FDC_mult_mod)
-# anova(AgexGroup_FDC_mult_mod)
-# 
-# 
-# 
-# Sex_Group_FD_mod <- lm(Mean_FD ~ Group + Sex + Group:Sex, data = covariates_data)
-# 
-# 
-# 
-# #plot gender against white matter integrity metrics (FBA)
-# #for FD
-# ggplot(covariates_data, aes(x = Sex, y = Mean_FD)) + 
-#     geom_boxplot(width = 0.5, fill = "white", outlier.size = 1, aes(colour = Sex)) +
-#     stat_summary(fun = mean, geom = "point", shape = 19, size = 2, aes(colour = Sex)) +
-#     xlab("Sex") + 
-#     ylab("Mean Fibre Density (FD)")
-# #for FC
-# ggplot(covariates_data, aes(x = Sex, y = Mean_FC)) + 
-#     geom_boxplot(width = 0.5, fill = "white", outlier.size = 1, aes(colour = Sex)) +
-#     stat_summary(fun = mean, geom = "point", shape = 19, size = 2, aes(colour = Sex)) +
-#     xlab("Sex") + 
-#     ylab("Mean Fibre Cross-section (FC)")
-# #for FDC
-# ggplot(covariates_data, aes(x = Sex, y = Mean_FDC)) + 
-#     geom_boxplot(width = 0.5, fill = "white", outlier.size = 1, aes(colour = Sex)) +
-#     stat_summary(fun = mean, geom = "point", shape = 19, size = 2, aes(colour = Sex)) +
-#     xlab("Sex") + 
-#     ylab("Mean Fibre Density Cross-section (FDC)")
-#      
-#     
-# #check if there's a difference between the white matter integrity metrics (FBA) between gender
-# #for FD
-# t.test(covariates_data$Mean_FD ~ covariates_data$Sex, var.equal = TRUE)
-# #for FC
-# t.test(covariates_data$Mean_FC ~ covariates_data$Sex, var.equal = TRUE)
-# #for FDC
-# t.test(covariates_data$Mean_FDC ~ covariates_data$Sex, var.equal = TRUE)
-# 
-# 
-# 
-# #plot group status and gender against white matter integrity metrics (FBA) - 2x5 factorial ANOVA
-# #for FD
-# ggplot(covariates_data, aes(x = Group, y = Mean_FD, color = Sex)) + 
-#     geom_boxplot(width = 0.5, fill = "white", outlier.size = 1, aes(colour = Sex)) +
-#     stat_summary(fun = mean, geom = "point", position = position_dodge(.5), shape = 19, size = 2, aes(colour = Sex)) +
-#     xlab("Group") + 
-#     ylab("Mean Fibre Density (FD)")+
-#     scale_x_discrete(labels = c("1" = "Control", "2" = "SCD", "3" = "aMCI", "4" = "mMCI", "5" = "AD")) 
-# #for FC
-# ggplot(covariates_data, aes(x = Group, y = Mean_FC, color = Sex)) + 
-#     geom_boxplot(width = 0.5, fill = "white", outlier.size = 1, aes(colour = Sex)) +
-#     stat_summary(fun = mean, geom = "point", position = position_dodge(.5), shape = 19, size = 2, aes(colour = Sex)) +
-#     xlab("Group") + 
-#     ylab("Mean Fibre Cross-section (FC)")+
-#     scale_x_discrete(labels = c("1" = "Control", "2" = "SCD", "3" = "aMCI", "4" = "mMCI", "5" = "AD")) 
-# #for FDC
-# ggplot(covariates_data, aes(x = Group, y = Mean_FDC, color = Sex)) + 
-#     geom_boxplot(width = 0.5, fill = "white", outlier.size = 1, aes(colour = Sex)) +
-#     stat_summary(fun = mean, geom = "point", position = position_dodge(.5), shape = 19, size = 2, aes(colour = Sex)) +
-#     xlab("Group") + 
-#     ylab("Mean Fibre Density Cross-section (FDC)")+
-#     scale_x_discrete(labels = c("1" = "Control", "2" = "SCD", "3" = "aMCI", "4" = "mMCI", "5" = "AD")) 
-# 
-# 
-# 
-# #check for significant difference in white matter integrity between groups, gender, and groups x gender
-# # 2x5 factorial ANOVA
-# #for FD
-# Sex_Group_FD_mod <- lm(Mean_FD ~ Group + Sex + Group:Sex, data = covariates_data)
-# anova(Sex_Group_FD_mod)
-# #for FC
-# Sex_Group_FC_mod <- lm(Mean_FC ~ Group + Sex + Group:Sex, data = covariates_data)
-# anova(Sex_Group_FC_mod)
-# #for FDC
-# Sex_Group_FDC_mod <- lm(Mean_FDC ~ Group + Sex + Group:Sex, data = covariates_data)
-# anova(Sex_Group_FDC_mod)
-# 
-# 
-# 
-# 
-# 
-# #plot clinical site against white matter integrity metrics (FBA)
-# #for FD
-# ggplot(covariates_data, aes(x = Clinical_site, y = Mean_FD)) + 
-#     geom_boxplot(width = 0.5, fill = "white", outlier.size = 1, aes(colour = Clinical_site)) +
-#     stat_summary(fun = mean, geom = "point", shape = 19, size = 2, aes(colour = Clinical_site)) +
-#     xlab("Clinical Site") + 
-#     ylab("Mean Fibre Density (FD)")
-# #for FC
-# ggplot(covariates_data, aes(x = Clinical_site, y = Mean_FC)) + 
-#     geom_boxplot(width = 0.5, fill = "white", outlier.size = 1, aes(colour = Clinical_site)) +
-#     stat_summary(fun = mean, geom = "point", shape = 19, size = 2, aes(colour = Clinical_site)) +
-#     xlab("Clinical Site") + 
-#     ylab("Mean Fibre Cross-section")
-# #for FDC
-# ggplot(covariates_data, aes(x = Clinical_site, y = Mean_FDC)) + 
-#     geom_boxplot(width = 0.5, fill = "white", outlier.size = 1, aes(colour = Clinical_site)) +
-#     stat_summary(fun = mean, geom = "point", shape = 19, size = 2, aes(colour = Clinical_site)) +
-#     xlab("Clinical Site") + 
-#     ylab("Mean Fibre Density Cross-section (FDC)")
-# 
-# 
-# #check for significant difference in white matter integrity between clinical sites
-# #for FD
-# Clinical_site_FD_mod <- lm(Mean_FD ~ Clinical_site, data = covariates_data)
-# anova(Clinical_site_FD_mod)
-# #for FC
-# Clinical_site_FC_mod <- lm(Mean_FC ~ Clinical_site, data = covariates_data)
-# anova(Clinical_site_FC_mod)
-# #for FDC
-# Clinical_site_FDC_mod <- lm(Mean_FDC ~ Clinical_site, data = covariates_data)
-# anova(Clinical_site_FDC_mod)
-
 #plot groups in a pie chart
-group_number <- c(35,60,55,52,27)
+group_number <- c(35,60,55,52,27) #will need to modify this
 myPalette <- brewer.pal(5,"Purples")
 #par(bg="transparent")
 pie(group_number, labels = c("C","SCD","aMCI","mMCI","AD"), border="white", col=myPalette)
