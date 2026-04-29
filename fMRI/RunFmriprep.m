@@ -61,13 +61,12 @@ for i = 1:length(participants)
     
     %b) Run fmriprep to preprocess anat + func images with different options: 
     
+    %using a standard template (e.g., MNI template)
+    unix(['sudo ' fmriprep_dock_dir, ' ' FmriprepDir 'sourcedata ' FmriprepDir 'derivatives participant --participant-label ' PAR_NAME ' --output-spaces MNI152NLin2009cAsym --skull-strip-t1w force --fs-license-file /SOFTWARE/freesurfer/license.txt']);
+    
     %using a custom template (e.g., DPRC template)
-    unix(['sudo ' fmriprep_dock_dir, ' ' FmriprepDir 'sourcedata ' FmriprepDir 'derivatives participant --participant-label ' PAR_NAME ' --output-spaces /SOFTWARE/fmriprep/templateflow/tpl-DPRCcustom --skull-strip-t1w force --fs-license-file /SOFTWARE/freesurfer/license.txt']);  
+    %unix(['sudo ' fmriprep_dock_dir, ' ' FmriprepDir 'sourcedata ' FmriprepDir 'derivatives participant --participant-label ' PAR_NAME ' --output-spaces /SOFTWARE/fmriprep/templateflow/tpl-DPRCcustom --skull-strip-t1w force --fs-license-file /SOFTWARE/freesurfer/license.txt']);  
     
     %using a native space (participant func)
     %unix(['sudo ' fmriprep_dock_dir, ' ' FmriprepDir 'sourcedata ' FmriprepDir 'derivatives participant --participant-label ' PAR_NAME ' --output-spaces func --skull-strip-t1w force --fs-license-file /SOFTWARE/freesurfer/license.txt']); 
-
-    %using a standard template
-    %unix(['sudo ' fmriprep_dock_dir, ' ' FmriprepDir 'sourcedata ' FmriprepDir 'derivatives participant --participant-label ' PAR_NAME ' --output-spaces MNI152NLin2009cAsym --skull-strip-t1w force --fs-license-file /SOFTWARE/freesurfer/license.txt']);
-
 end
