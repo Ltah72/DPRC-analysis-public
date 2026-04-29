@@ -21,13 +21,17 @@
 %choose time period
 period = input('Which time period do you want to analyse, e.g. F0, F2, all, etc?: ', 's');
 
+%if using Docker, define your home directory: 
+fmriprep_dock_dir = input('Please enter your home directory where fmriprep-docker is stored:', 's');
+%e.g., fmriprep_dock_dir = '/home/ubuntu/.local/bin/./fmriprep-docker'
+
 %Define your sourcedata directory:
-%sourcedataDir = input('Please enter sourcedata directory:', 's');
-sourcedataDir = (['/data/sourcedata/' period]);
+sourcedataDir = input('Please enter sourcedata directory:', 's');
+%e.g,. sourcedataDir = (['/data/sourcedata/' period]);
 
 %Define fmriprep directory, so that it may be used:
-%FmriprepDirectory = input('Please enter fmriprep directory:', 's');
-FmriprepDir = '/data/USERS/LENORE/fmriprep_test/';
+FmriprepDir = input('Please enter fmriprep directory:', 's');
+%e.g, FmriprepDir = '/data/USERS/LENORE/fmriprep_directory/';
 
 %go into fmriprep sourcedata directory
 cd([FmriprepDir 'sourcedata/']);
@@ -43,7 +47,7 @@ for i = 1:length(participants)
     %Step 1: Preprocess anatomical images (T1w and T2 FLAIR images)
     
     %a) Gibbs ringing correction (mrdegibbs) on all anat files (T1w, T2w
-    %blade, + T2w FLAIR). Use 'force' to overwrite the raw file in the sourcedata. 
+    %blade, + T2w FLAIR). Use the '-force' option to overwrite the raw file in the sourcedata. 
     %Do note that every time you re-do fmriprep, this script will copy the 
     %raw, uncleaned /anat sourcedata to work with, with the participants you chose. 
     copyfile ([sourcedataDir, '/' PAR_NAME, '/anat/*'], [FmriprepDir, '/sourcedata/' PAR_NAME, '/anat']);
@@ -55,11 +59,15 @@ for i = 1:length(participants)
     
     cd([FmriprepDir 'sourcedata/']);
     
-    %b) Run fmriprep to preprocess anat + func images
-    %unix(['sudo /home/ubuntu/.local/bin/./fmriprep-docker ' FmriprepDir 'sourcedata ' FmriprepDir 'derivatives participant --participant-label ' PAR_NAME ' --output-spaces func --skull-strip-t1w force --fs-license-file /SOFTWARE/freesurfer/license.txt']); %using a native space (participant func)
-    unix(['sudo /home/ubuntu/.local/bin/./fmriprep-docker ' FmriprepDir 'sourcedata ' FmriprepDir 'derivatives participant --participant-label ' PAR_NAME ' --output-spaces /SOFTWARE/fmriprep/templateflow/tpl-DPRCcustom --skull-strip-t1w force --fs-license-file /SOFTWARE/freesurfer/license.txt']); %using a custom template (DPRC template) 
-    unix(['sudo /home/ubuntu/.local/bin/./fmriprep-docker ' FmriprepDir 'sourcedata ' FmriprepDir 'derivatives participant --participant-label ' PAR_NAME ' --output-spaces DPRCcustom --skull-strip-t1w force --fs-license-file /SOFTWARE/freesurfer/license.txt']); %using a custom template (DPRC template) 
+    %b) Run fmriprep to preprocess anat + func images with different options: 
+    
+    %using a custom template (e.g., DPRC template)
+    unix(['sudo ' fmriprep_dock_dir, ' ' FmriprepDir 'sourcedata ' FmriprepDir 'derivatives participant --participant-label ' PAR_NAME ' --output-spaces /SOFTWARE/fmriprep/templateflow/tpl-DPRCcustom --skull-strip-t1w force --fs-license-file /SOFTWARE/freesurfer/license.txt']);  
+    
+    %using a native space (participant func)
+    %unix(['sudo ' fmriprep_dock_dir, ' ' FmriprepDir 'sourcedata ' FmriprepDir 'derivatives participant --participant-label ' PAR_NAME ' --output-spaces func --skull-strip-t1w force --fs-license-file /SOFTWARE/freesurfer/license.txt']); 
 
-    %unix(['sudo /home/ubuntu/.local/bin/./fmriprep-docker ' FmriprepDir 'sourcedata ' FmriprepDir 'derivatives participant --participant-label ' PAR_NAME ' --output-spaces MNI152NLin2009cAsym --skull-strip-t1w force --fs-license-file /SOFTWARE/freesurfer/license.txt']); %using a standard template
+    %using a standard template
+    %unix(['sudo ' fmriprep_dock_dir, ' ' FmriprepDir 'sourcedata ' FmriprepDir 'derivatives participant --participant-label ' PAR_NAME ' --output-spaces MNI152NLin2009cAsym --skull-strip-t1w force --fs-license-file /SOFTWARE/freesurfer/license.txt']);
 
 end
