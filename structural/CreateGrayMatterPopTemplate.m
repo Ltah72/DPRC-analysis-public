@@ -15,16 +15,16 @@ close all;
 period = input('Which time period do you want to analyse, e.g. F0, F2, all, etc?: ', 's');
 
 %define/add pathways
-%GreyMatPopTempDir = input('Please enter grey matter directory:', 's');
-GreyMatPopTempDir = '/data/USERS/LENORE/fslvbm_template/';
+GreyMatPopTempDir = input('Please enter grey matter directory:', 's');
+%e.g., GreyMatPopTempDir = '/data/USERS/LENORE/fslvbm_template/';
 
 %Define your sourcedata directory:
-%sourcedataDirectory = input('Please enter sourcedata directory:', 's');
-sourcedataDir = (['/data/sourcedata/' period]);
+sourcedataDirectory = input('Please enter sourcedata directory:', 's');
+%e.g., sourcedataDir = (['/data/sourcedata/' period]);
 
 %Script directory is defined, so that it can be added to path below:
-%ScriptDirectory = input('Please enter script directory:', 's');
-ScriptDirectory = '/data/USERS/LENORE/scripts/dprc/';
+ScriptDirectory = input('Please enter script directory:', 's');
+%e.g., ScriptDirectory = '/data/USERS/LENORE/scripts/dprc/';
 
 %Add your script and all necessary files (e.g. data, functions) to path
 addpath(genpath(GreyMatPopTempDir));
