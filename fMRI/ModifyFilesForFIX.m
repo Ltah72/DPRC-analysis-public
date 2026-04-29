@@ -13,18 +13,18 @@ period = input('Which time period do you want to analyse, e.g. F0, F2, all, etc?
 
 %choose which fMRI file name you want to use to process (e.g.
 %_task-rest_run-1_space-MNI152Lin2009cAsym_desc-preproc_bold.nii.gz')
-%fMRI_filename = input('Please enter the preprocessed fMRI file name you wish to use:', 's');
-fMRI_filename = '_task-rest_run-1_space-MNI152NLin2009cAsym_';
-%T1w_filename = input('Please enter the preprocessed T1w file name you wish to use:', 's');
-T1w_filename = '_space-MNI152NLin2009cAsym_desc-preproc_T1w.nii.gz';
+fMRI_filename = input('Please enter the preprocessed fMRI file name you wish to use:', 's');
+%e.g., fMRI_filename = '_task-rest_run-1_space-MNI152NLin2009cAsym_';
+T1w_filename = input('Please enter the preprocessed T1w file name you wish to use:', 's');
+%e.g., T1w_filename = '_space-MNI152NLin2009cAsym_desc-preproc_T1w.nii.gz';
 
 %Define fmriprep directory:
-%FmriprepDirectory = input('Please enter fmriprep directory:', 's');
-FmriprepDir = '/data/USERS/LENORE/fmriprep_test/';
+FmriprepDir = input('Please enter fmriprep directory:', 's');
+%e.g., FmriprepDir = '/data/USERS/LENORE/fmriprep_directory/';
 
 %Script directory is defined, so that it can be added to path below:
-%ScriptDirectory = input('Please enter script directory:', 's');
-ScriptDirectory = '/data/USERS/LENORE/scripts/dprc/';
+ScriptDirectory = input('Please enter script directory:', 's');
+%e.g., ScriptDirectory = '/data/USERS/LENORE/scripts/dprc/';
 
 %Add your script and all necessary files (e.g. data, functions) to path
 addpath(genpath(FmriprepDir));
@@ -88,12 +88,4 @@ for i = 1:length(FIX_participants)
     
     %go back into fmriprep derivatives directory
     cd([FmriprepDir 'derivatives/fmriprep/']);
-
 end 
-
-
-
-
-
-
-
