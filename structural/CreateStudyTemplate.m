@@ -4,9 +4,6 @@
 %Steps are based upon this fslwiki page: http://web.mit.edu/fsl_v5.0.10/fsl/doc/wiki/FLIRT(2f)FAQ.html#How_do_I_make_my_own_study-specific_template_image_with_FLIRT.3F
 
 
-
-
-
 clc;
 clear all;
 close all;
@@ -15,16 +12,16 @@ close all;
 period = input('Which time period do you want to analyse, e.g. F0, F2, all, etc?: ', 's');
 
 %define/add pathways
-%StudyTempDir = input('Please enter study template directory:', 's');
-StudyTempDir = '/data/USERS/LENORE/study_template/';
+StudyTempDir = input('Please enter study template directory:', 's');
+%e.g., StudyTempDir = '/data/USERS/LENORE/study_template/';
 
 %Define your sourcedata directory:
-%sourcedataDirectory = input('Please enter sourcedata directory:', 's');
-sourcedataDir = (['/data/sourcedata/' period]);
+sourcedataDirectory = input('Please enter sourcedata directory:', 's');
+%e.g., sourcedataDir = (['/data/sourcedata/' period]);
 
 %Script directory is defined, so that it can be added to path below:
-%ScriptDirectory = input('Please enter script directory:', 's');
-ScriptDirectory = '/data/USERS/LENORE/scripts/dprc/';
+ScriptDirectory = input('Please enter script directory:', 's');
+%e.g., ScriptDirectory = '/data/USERS/LENORE/scripts/dprc/';
 
 %Add your script and all necessary files (e.g. data, functions) to path
 addpath(genpath(StudyTempDir));
@@ -39,8 +36,7 @@ study_participants = uipickfiles;
 %Choose a reference image from among the set & place into directory
 RefFile = uipickfiles;
 RefName = RefFile{1};
-RefPAR = RefName(21:35);
-%RefPAR = ([RefPAR '_T1w']);
+RefPAR = RefName(21:35); %modify if needed
 copyfile ([sourcedataDir, '/' RefPAR '/anat/' RefPAR '_T1w.nii'], [StudyTempDir]); 
 
 %go into study template dir
@@ -55,7 +51,6 @@ for i = 1:length(study_participants)
     %Register each image in the set to the reference image, using FLIRT, and 
     %saving the output images
     unix(['flirt -in ' PAR_NAME '_T1w -ref ' RefPAR '_T1w -dof 12 -out imout' num2str(i) ' -omat ' PAR_NAME '_to_imref.mat']); 
-    
 end
 
 %Average the output images together using fslmaths (for 100 participants)
@@ -71,8 +66,6 @@ unix(['fslmaths imout1 -add imout2 -add imout3 -add imout4 -add imout5 -add imou
     ' -add imout91 -add imout92 -add imout93 -add imout94 -add imout95 -add imout96 -add imout97 -add imout98 -add imout99 -add imout100'...' 
     ' -div 100 avg_im -odt float']);
 
-
-
 %Repeat process and iterate your images, but this time using your average
 %created image as the reference image
 for i = 1:length(study_participants)
@@ -81,10 +74,8 @@ for i = 1:length(study_participants)
     
     %Register each image in the set to the new reference image (the average 
     %image you created above), using FLIRT, and saving the output images
-    unix(['flirt -in ' PAR_NAME '_T1w -ref avg_im -dof 12 -out imout-iter_' num2str(i) ' -omat ' PAR_NAME '_to_imref-iter.mat']); 
-    
+    unix(['flirt -in ' PAR_NAME '_T1w -ref avg_im -dof 12 -out imout-iter_' num2str(i) ' -omat ' PAR_NAME '_to_imref-iter.mat']);   
 end
-
 
 %Average the output images together using fslmaths (for 100 participants)
 unix(['fslmaths imout-iter_1 -add imout-iter_2 -add imout-iter_3 -add imout-iter_4 -add imout-iter_5 -add imout-iter_6 -add imout-iter_7 -add imout-iter_8 -add imout-iter_9 -add imout-iter_10'...'
@@ -98,6 +89,4 @@ unix(['fslmaths imout-iter_1 -add imout-iter_2 -add imout-iter_3 -add imout-iter
     ' -add imout-iter_81 -add imout-iter_82 -add imout-iter_83 -add imout-iter_84 -add imout-iter_85 -add imout-iter_86 -add imout-iter_87 -add imout-iter_88 -add imout-iter_89 -add imout-iter_90'...' 
     ' -add imout-iter_91 -add imout-iter_92 -add imout-iter_93 -add imout-iter_94 -add imout-iter_95 -add imout-iter_96 -add imout-iter_97 -add imout-iter_98 -add imout-iter_99 -add imout-iter_100'...' 
     ' -div 100 avg_im_iter -odt float']);
-
-
 
