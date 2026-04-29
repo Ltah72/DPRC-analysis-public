@@ -16,17 +16,22 @@ Created on Wed Aug 18 16:39:30 2021
 #preprocess your data, you can use the .tsv file to denoise the data more. This 
 #should be run on your data after running fmriprep. 
 
+#This script was created in Spyder, which utilises Python code. 
+
 #import libraries
 import os
 import subprocess
 
 
 #define location of the denoiser script
-denoiserLocation = 'C:/Users/ltah262/Programs/denoiser-master/run_denoise.py'
+denoiserLocation = input('Please enter the directory with the denoiser script: ');
+#e.g., denoiserLocation = 'C:/Users/ltah262/Programs/denoiser-master/run_denoise.py'
 #define fmriprepped data directory
-fmriprepDir = 'V:/Vault/NECTAR_data/LENORE/derivatives/fmriprepped_data/derivatives/fmriprep/'
-#define output path
-out_path = 'V:/NECTAR_data/LENORE/derivatives/fMRI_denoised/'
+fmriprepDir = input('Please enter the directory of the derivatives of fmriprep: ');
+#e.g, fmriprepDir = 'V:/Vault/NECTAR_data/LENORE/derivatives/fmriprepped_data/derivatives/fmriprep/'
+#define output path - where your denoised data will be stored. 
+out_path = input('Please enter the output directory for the denoised data to be stored into: ');
+#e.g., out_path = 'V:/NECTAR_data/LENORE/derivatives/fMRI_denoised/'
 
 #go into fmriprepped derivatives directory
 os.chdir(fmriprepDir)
@@ -44,18 +49,14 @@ for i in participants:
     #define variables
     PAR_NAME = i
    
+    #check formatting of the data file names
     img_file = fmriprepDir+PAR_NAME+'/func/'+PAR_NAME+'_task-rest_run-1_space-MNI152NLin6Asym_desc-smoothAROMAnonaggr_bold.nii.gz'
     tsv_file = fmriprepDir+PAR_NAME+'/func/'+PAR_NAME+'_task-rest_run-1_desc-confounds_timeseries.tsv'
-   
-    #for TH data 
-    #img_file = fmriprepDir+PAR_NAME+'_task-rest_run-1_space-MNI152NLin6Asym_desc-smoothAROMAnonaggr_bold.nii.gz'
-    #tsv_file = fmriprepDir+PAR_NAME+'_task-rest_run-1_desc-confounds_timeseries.tsv' 
    
     #run denoiser 
     # usage: run_denoise.py [-h] [--col_names COL_NAMES [COL_NAMES ...]] [--hp_filter HP_FILTER] [--lp_filter LP_FILTER] [--out_figure_path OUT_FIGURE_PATH] img_file tsv_file out_path
     subprocess.call(["python", denoiserLocation, img_file, tsv_file, out_path, "--col_names", "std_dvars", "dvars", "framewise_displacement", "rmsd", "a_comp_cor_00", "a_comp_cor_01", "a_comp_cor_02", "a_comp_cor_03", "a_comp_cor_04", "cosine00", "cosine01", "cosine02", "cosine03", "trans_x", "trans_y", "trans_z", "rot_x", "rot_y", "rot_z"])
    
- 
     print('Finished:', i)
     #create text file for keeping track of finished participants
     file1 = open("DenoisedFinished.txt", "a+")
@@ -63,24 +64,4 @@ for i in participants:
     file1.write(i)
     file1.write("\n")
     file1.close()
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
