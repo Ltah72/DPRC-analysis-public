@@ -11,8 +11,8 @@
 %Date: 10/01/21
 
 %Define fmriprep directory, so that it used:
-%FmriprepDirectory = input('Please enter fmriprep directory:', 's');
-FmriprepDir = '/data/USERS/LENORE/fmriprep_test/';
+FmriprepDir = input('Please enter fmriprep directory:', 's');
+%e.g., FmriprepDir = '/data/USERS/LENORE/fmriprep_directory/';
 
 %go into fmriprep sourcedata directory
 cd([FmriprepDir 'sourcedata/']);
@@ -54,7 +54,5 @@ for i = 1:length(participants)
     saveAsJSON(jsonDataPhaseDiff, [PAR_NAME '_phasediff.json']);
     
     %go into fmriprep sourcedata directory
-    cd([FmriprepDir 'sourcedata/']);
-
-    
+    cd([FmriprepDir 'sourcedata/']);   
 end
