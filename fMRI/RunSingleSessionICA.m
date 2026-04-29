@@ -1,9 +1,6 @@
 %single ICA MELODIC per each subject (for denoising). This is done after
 %fmriprep, hence the options to omit the preprocessing steps. 
 
-
-
-
 clc;
 clear all;
 close all;
@@ -13,12 +10,12 @@ period = input('Which time period do you want to analyse, e.g. F0, F2, all, etc?
 
 %Define fmriprep directory, so that it may be used to get preprocessed data 
 %to run ICA:
-%FmriprepDirectory = input('Please enter fmriprep directory:', 's');
-FmriprepDir = '/data/USERS/LENORE/fmriprep_test/';
+FmriprepDir = input('Please enter fmriprep directory:', 's');
+%e.g., FmriprepDir = '/data/USERS/LENORE/fmriprep_directory/';
 
 %Script directory is defined, so that it can be added to path below:
-%ScriptDirectory = input('Please enter script directory:', 's');
-ScriptDirectory = '/data/USERS/LENORE/scripts/dprc/';
+ScriptDirectory = input('Please enter script directory:', 's');
+%e.g, ScriptDirectory = '/data/USERS/LENORE/scripts/dprc/';
 
 %Add your script and all necessary files (e.g. data, functions) to path
 addpath(genpath(FmriprepDir));
@@ -37,17 +34,14 @@ for i = 1:length(ICA_participants)
     %go into each participant's folder
     cd ([PAR_NAME '/func/']); 
     
-    %Run single-session MELODIC and place output into participant directory
-    %unix(['melodic -i ' PAR_NAME '_task-rest_run-1_desc-preproc_bold.nii.gz -m /SOFTWARE/fsl/data/standard/MNI152_T1_1mm_brain_mask.nii.gz --nobet -o SingleSubICA.ica']);
-   
+    %Run single-session MELODIC and place output into participant directory - some options available below. 
+
+    %data formatted to a standard template (e.g., MNI) 
     unix(['melodic -i ' PAR_NAME '_task-rest_run-1_space-MNI152NLin2009cAsym_desc-preproc_bold.nii.gz -m ' PAR_NAME '_task-rest_run-1_space-MNI152NLin2009cAsym_desc-brain_mask.nii.gz --nobet -o filtered_func_data.ica']);
 
+    %participant specific
+    %unix(['melodic -i ' PAR_NAME '_task-rest_run-1_desc-preproc_bold.nii.gz -m /SOFTWARE/fsl/data/standard/MNI152_T1_1mm_brain_mask.nii.gz --nobet -o SingleSubICA.ica']);
+   
     %go back into fmriprep derivatives directory
     cd([FmriprepDir 'derivatives/fmriprep/']); 
 end
-
-
-
-    
-
-
